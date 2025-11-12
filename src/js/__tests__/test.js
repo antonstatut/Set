@@ -1,24 +1,37 @@
 import Team from '../app.js';
 
-test('добавление уникального персонажа в команду', () => {
-  const petr = { name: 'petr' };
-  const fedya = { name: 'fedya' };
-  Team.add(petr);
-  Team.add(fedya);
-  expect(Team.size).toBe(2);
-});
+describe('Team', () => {
+  let team;
+  beforeEach(() => {
+    team = new Team();
+  });
+  test('добавление уникального персонажа в команду', () => {
+    const petr = { name: 'petr' };
+    const fedya = { name: 'fedya' };
+    team.add(petr);
+    team.add(fedya);
+    expect(team.members.size).toBe(2);
+  });
+  test('нет дубликатов', () => {
+    const petr = { name: 'petr' };
+    team.add(petr);
+    expect(() => {
+      team.add(petr);
+    }).toThrow(new Error('Персонаж уже есть в команде'));
+  });
 
-test('добавление нескольких персонажей в команду', () => {
-  const petr = { name: 'petr' };
-  const fedya = { name: 'fedya' };
-  const tolya = { name: 'tolya' };
-  Team.addAll(petr, fedya, tolya);
-  expect(Team.size).toBe(3);
-});
+  test('добавление нескольких персонажей в команду', () => {
+    const petr = { name: 'petr' };
+    const fedya = { name: 'fedya' };
+    const tolya = { name: 'tolya' };
+    team.addAll(petr, fedya, tolya);
+    expect(team.members.size).toBe(3);
+  });
 
-test('конвертация Set в массив', () => {
-  const petr = { name: 'petr' };
-  const fedya = { name: 'fedya' };
-  Team.addAll(petr, fedya);
-  expect(Team.toArray()).toEqual([petr, fedya]);
+  test('конвертация Set в массив', () => {
+    const petr = { name: 'petr' };
+    const fedya = { name: 'fedya' };
+    team.addAll(petr, fedya);
+    expect(team.toArray()).toEqual([petr, fedya]);
+  });
 });
